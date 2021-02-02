@@ -8,14 +8,10 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Auth\AuthManager;
 
 class LoginController extends Controller
 {
-  public function __construct()
-  {
-      Auth::setDefaultDriver('api');
-  }
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller - disigned originally for web auth; must reconfigure for API design

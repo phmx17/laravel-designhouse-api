@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
-
+Route::get('me', 'User\MeController@getMe');
 // route group for authenticated users only
 Route::group(['middleware' => ['auth:api']], function() {
   Route::post('logout', 'Auth\LoginController@logout');  // this must be in this route group!
