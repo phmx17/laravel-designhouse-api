@@ -42,6 +42,15 @@ class SettingsController extends Controller
     // current password
     // new password
     // password confirmation
-    $this->validate($request)
+    $this->validate($request, [
+      'current_password' => ['required', new MatchOldPassword], // MOP = custom rule 
+      'password' => ['required', 'confirmed', 'min:6', new CheckSamePassword]
+    ]);
+
+    $request->user()->update([
+      'password' => bcrypt($request->password)
+    ]);
+
+    return response()->json(['message' => 'Password was successfully updated'], 200);
   }
 }
