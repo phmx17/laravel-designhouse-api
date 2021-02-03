@@ -18,7 +18,8 @@ Route::group(['middleware' => ['guest:api']], function() {
   Route::post('verification/verify/{user}', 'Auth\VerificationController@verify')->name('verification.verify');  // use verify()
   Route::post('verification/resend', 'Auth\VerificationController@resend');  // use resend()
   Route::post('login', 'Auth\LoginController@login');  // another laravel base controller; don't forget 'Auth\'
-
+  Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+  Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
 
 
