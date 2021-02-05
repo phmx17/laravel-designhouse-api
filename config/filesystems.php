@@ -51,8 +51,15 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'url' => env('APP_URL').'/storage', // \storage\app\public
+            'visibility' => 'public', // can be accessed from outside laravel project
+        ],
+
+        'tmp' => [
+          'driver' => 'local',
+          'root' => storage_path(),
+          'url' => env('APP_URL') . '/storage', // get from .env
+          'visibility' => 'public'
         ],
 
         's3' => [

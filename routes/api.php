@@ -8,6 +8,9 @@ Route::group(['middleware' => ['auth:api']], function() {
   Route::post('logout', 'Auth\LoginController@logout');  // this must be in this route group!
   Route::put('settings/profile', 'User\SettingsController@updateProfile');
   Route::put('settings/password', 'User\SettingsController@updatePassword');
+  // upload designs
+  Route::post('designs', 'Designs\UploadController@upload');
+
 });
 
 // route group for guests only
