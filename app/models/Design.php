@@ -10,7 +10,7 @@ class Design extends Model
     'user_id',
     'image',
     'title',
-    'desciption',
+    'description',
     'slug',
     'close_to_comment',  // ability for people comment or not
     'is_live',

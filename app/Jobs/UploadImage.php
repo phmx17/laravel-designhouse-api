@@ -13,7 +13,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Tymon\JWTAuth\Contracts\Providers\Strorage;
 
-class UploadImage implements ShouldQueue
+class UploadImage implements ShouldQueue  // after $ php artisan queue:table
+// inside .env: QUEUE_CONNECTION=database # =sync would cause user to have to wait until upload is complete
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
