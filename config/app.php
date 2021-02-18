@@ -175,6 +175,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class, 
+        // this connects the Contracts / Interfaces (IDesign etc) with the Repository files (DesignRepository)
+
 
     ],
 

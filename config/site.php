@@ -1,4 +1,4 @@
 <?php
 return [
-  'upload_disk' => 's3' // choices of 'public' or amazon 's3'
+  'upload_disk' => 'public' // choices of 'public' or amazon 's3'
 ];
