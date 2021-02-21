@@ -8,6 +8,14 @@ use App\Jobs\UploadImage;
 
 class UploadController extends Controller
 {
+  // implementing Interface for Repositories
+  protected $designs;
+
+  public function __construct(IDesign $designs)
+  {
+      $this->designs = $designs;
+  }  
+
   public function upload(Request $request) 
   {
     $this->validate($request, [
@@ -25,7 +33,7 @@ class UploadController extends Controller
     $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
 
     // create the database record for the design
-    $design = auth()->user()->designs()->create([
+    $design = $this->designs->create([
       'image' => $filename,
       'disk' => config('site.upload_disk'),  // see in \config\site.php      
     ]);

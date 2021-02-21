@@ -15,7 +15,7 @@ class DesignController extends Controller
   // inject the Repository Contracts with a php magic constructor
 
   protected $designs;
-  public function __construct(IDesign $designs) // injecting contract class into controller; pull in as many here as you like
+  public function __construct(IDesign $designs) // injecting contract class into constructor; pull in as many here as you like
   {
     $this->designs = $designs;
   }
@@ -27,9 +27,16 @@ class DesignController extends Controller
     $designs = $this->designs->all(); // new version with Repository pattern where the function definition lies in the individual Repository files; not here anymore
     return DesignResource::collection($designs);  // as opposed to single instance below: return new DesignResource($design);
   }
+
+  public function findDesign($id)
+  {
+    $design = $this->designs->find($id);  // this method is declared in IBase interface and defined in BaseRepository
+    return new DesignResource($design);  // convert resource to array
+  }
+
   public function update(Request $request, $id)
   {
-    $design = Design::findOrFail($id);
+    $design = $this->designs->find($id);
     $this->authorize('update', $design);  // policy authorize update(); $design = resource
 
     $this->validate($request, [
@@ -38,7 +45,7 @@ class DesignController extends Controller
       'tags' => ['required']
     ]);    
 
-    $design->update([
+    $design = $this->designs->update($id, [
       'title' => $request->title,
       'description' => $request->description,
       'slug' => Str::slug($request->title), // 'hello world' => 'hello-world'
@@ -46,14 +53,14 @@ class DesignController extends Controller
     ]);
     
     // apply the tags
-    $design->retag($request->tags); // removes all current tags (detag()) and retags the model instance
+    $this->designs->applyTags($id, $request->tags); // interface method; removes all current tags (detag()) and retags the model instance;
 
     return new DesignResource($design);
   }
 
   public function destroy($id)
   {
-    $design = Design::findOrFail($id);  // exit if not found
+    $design = $this->designs->find($id); // before Repository Interface: Design::findOrFail($id);  // exit if not found
     $this->authorize('delete', $design);  // policy authorize delete(); $design = resource
     
     // delete all files associated to the design
@@ -63,7 +70,7 @@ class DesignController extends Controller
         Storage::disk($design->disk)->delete("uploads/designs/{$size}/" . $design->image);
       }      
     }
-    $design->delete();
+    $this->designs->delete();
     return response()->json(['message' => 'Design has been deleted'], 200);
   }
 }

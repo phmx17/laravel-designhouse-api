@@ -12,6 +12,13 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class SettingsController extends Controller
 {
+  // implementing the interface for Repositories
+  protected $users;
+  public function __construct(IUser $users)
+  {
+      $this->users = $users;
+  }
+
   public function updateProfile(Request $request)
   {
     $user = auth()->user();
@@ -26,7 +33,7 @@ class SettingsController extends Controller
     // create a geo location based on the long and lat
     $location = new Point($request->location['latitude'], $request->location['longitude']);
 
-    $user->update([
+    $user = $this->users->update(auth()->id(), [
       'name' => $request->name,
       'formatted_address' => $request->formatted_address,
       'location' => $location,

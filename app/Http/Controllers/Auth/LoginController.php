@@ -11,18 +11,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller - disigned originally for web auth; must reconfigure for API design
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers; // trait contains login(), attemptLogin() returns bool; 
 
     public function attemptLogin(Request $request)

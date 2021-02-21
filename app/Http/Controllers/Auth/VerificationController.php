@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\URL;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Verified;
+use App\Repositories\Contracts\IUser;
 use App\Providers\RouteServiceProvider;
 // use Illuminate\Foundation\Auth\VerifiesEmails; not using this anymore
 
@@ -19,10 +20,11 @@ class VerificationController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(IUser $users)
     {
         // $this->middleware('signed')->only('verify');  // expiration
         $this->middleware('throttle:6,1')->only('verify', 'resend');  // limit the amount of resend email requests
+        $this->users = $users;
     }
 
     /**
@@ -55,7 +57,7 @@ class VerificationController extends Controller
       $this->validate($request, [
         'email' => ['email', 'required']
       ]);
-      $user = User::where('email', $request->email)->first(); // query on User model where email prop matches requst email and return the first record to match
+      $user = $this->users->findWhereFirst('email', $request->email); // comes from IBase interface; query on User model where email prop matches requst email and return the first record to match
       // if there is no user with that email in db return json err and 422
       if (! $user){
         return response()->json(['errors' => [

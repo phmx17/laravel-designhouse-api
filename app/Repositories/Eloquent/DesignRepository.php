@@ -12,5 +12,11 @@ class DesignRepository extends BaseRepository implements IDesign
   {
     return Design::class; // returns the entire namespace: App\Models\Design; this is to dynamically pass the model to BaseRepository
   }
+
+  public function applyTags($id, array $data)
+  {
+    $design = $this->find($id); // extends from BaseRepository
+    $design->retag($data);  // laravel method
+  }
 }
 
