@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Designs;
 
 use App\Models\Design;
-use App\Repositories\Contracts\IDesign; // Design Interface = contract; for use with Repository Pattern
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Criteria\LatestFirst;
+use App\Repositories\Contracts\IDesign; // Design Interface = contract; for use with Repository Pattern
 
 class DesignController extends Controller
 { 
@@ -24,7 +25,9 @@ class DesignController extends Controller
   { 
     // implementing Repository Pattern
     // $designs = Design::all(); // old version
-    $designs = $this->designs->all(); // new version with Repository pattern where the function definition lies in the individual Repository files; not here anymore
+    $designs = $this->designs->withCriteria([
+      new LatestFirst()
+    ])->all(); // new version with Repository pattern where the function definition lies in the individual Repository files; not here anymore
     return DesignResource::collection($designs);  // as opposed to single instance below: return new DesignResource($design);
   }
 

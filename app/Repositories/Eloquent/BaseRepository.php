@@ -1,18 +1,20 @@
 <?php
 
 namespace App\Repositories\Eloquent;
+use Illuminate\Support\Arr;
 use App\Exceptions\ModelNotDefined;
 use App\Repositories\Contracts\IBase;
+use App\Repositories\Criteria\ICriteria;
 
 // to be extended in other repos in order to prevent duplication 
-abstract class BaseRepository implements IBase
+abstract class BaseRepository implements IBase, ICriteria
 {
 
   protected $model; // for the constructor
 
   public function __construct()
   {
-    $this->model = $this->getModelClass();  // be able to pass classes dynamically
+    $this->model = $this->getModelClass();  // be able to pass classes dynamically; see at bottom
   }
 
   public function all()
@@ -56,6 +58,16 @@ abstract class BaseRepository implements IBase
   {
     $record = $this->find($id); // see above
     return $record->delete;
+  }
+
+  public function withCriteria(...$criteria)
+  {
+    $criteria = Arr::flatten($criteria);
+
+    foreach($criteria as $criterion){
+      $this->model = $criterion->apply($this->model); // same as $model->orderBy('created_at')
+    }
+    return $this;
   }
 
 
