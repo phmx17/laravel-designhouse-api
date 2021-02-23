@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
   Route::post('designs', 'Designs\UploadController@upload');
   Route::put('designs/{id}', 'Designs\DesignController@update');
   Route::delete('designs/{id}', 'Designs\DesignController@destroy');
-
+  // Comments
+  Route::post('designs/{id}/comments', 'Designs\CommentController@store');
+  Route::put('comments/{id}', 'Designs\CommentController@update');
+  Route::delete('comments/{id}', 'Designs\CommentController@destroy');
 });
 
 // route group for guests only

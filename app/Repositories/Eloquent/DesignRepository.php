@@ -18,5 +18,15 @@ class DesignRepository extends BaseRepository implements IDesign
     $design = $this->find($id); // extends from BaseRepository
     $design->retag($data);  // laravel method
   }
+
+  public function addComment($designId, array $data)
+  {
+    // get design for which to comment on
+    $design = $this->find($designId);
+
+    // create the comment for the design
+    $comment = $design->comments()->create($data);
+    return $comment;
+  }
 }
 
