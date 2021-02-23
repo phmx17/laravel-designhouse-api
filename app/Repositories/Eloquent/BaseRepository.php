@@ -19,8 +19,9 @@ abstract class BaseRepository implements IBase, ICriteria
 
   public function all()
   {
-    return $this->model->all(); // dynamically pass the model for each caller
+    return $this->model->get(); // dynamically pass the model for each caller
   }
+
   public function find($id)
   {
     $result = $this->model->findOrFail($id);
@@ -60,7 +61,7 @@ abstract class BaseRepository implements IBase, ICriteria
     return $record->delete;
   }
 
-  public function withCriteria(...$criteria)
+  public function withCriteria(...$criteria)  // implemented from ICriteria interface
   {
     $criteria = Arr::flatten($criteria);
 

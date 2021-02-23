@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Designs;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Jobs\UploadImage;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\Contracts\IDesign;
 
 class UploadController extends Controller
 {
@@ -19,8 +20,8 @@ class UploadController extends Controller
   public function upload(Request $request) 
   {
     $this->validate($request, [
-      'image' => ['required', 'mimes:jpeg,gif,bmp,png', 'max:2048 ']  // mimes (plural)
-    ]);
+      'image' => ['required', 'mimes:jpeg,gif,bmp,png', 'max:2048']
+  ]); 
 
     //get the image
     $image = $request->file('image');

@@ -8,7 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
 use Illuminate\Support\Facades\Storage;
-use App\Repositories\Criteria\LatestFirst;
+use App\Repositories\Eloquent\Criteria\{
+  LatestFirst,
+  IsLive,
+  ForUser
+};
+
 use App\Repositories\Contracts\IDesign; // Design Interface = contract; for use with Repository Pattern
 
 class DesignController extends Controller
@@ -22,12 +27,12 @@ class DesignController extends Controller
   }
 
   public function index()
-  { 
-    // implementing Repository Pattern
-    // $designs = Design::all(); // old version
+  {     
     $designs = $this->designs->withCriteria([
-      new LatestFirst()
-    ])->all(); // new version with Repository pattern where the function definition lies in the individual Repository files; not here anymore
+      new LatestFirst(),  
+      new IsLive(),
+      new ForUser(1)
+    ])->all(); 
     return DesignResource::collection($designs);  // as opposed to single instance below: return new DesignResource($design);
   }
 
