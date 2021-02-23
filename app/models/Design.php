@@ -25,6 +25,13 @@ class Design extends Model
   {
     return $this->belongsTo(User::class);
   }
+
+  public function comments()
+  {
+    return $this->morphMany(Comment::class, 'commentable')\
+      ->orderBy('created_at', 'asc');
+  }
+
   /**
    * provide image path for public (local) storage or s3
    * returns thumbnail as well as large and original image

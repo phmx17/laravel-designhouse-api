@@ -7,12 +7,14 @@ use Illuminate\Support\ServiceProvider;
 // pull in the contracts
 use App\Repositories\Contracts\{    // this {} thing only works after php 7
   IDesign,
-  IUser
+  IUser,
+  IComment
 };
 // pull in the Repos; hook them up below in Bootstrap services
 use App\Repositories\Eloquent\{    
   DesignRepository,
-  UserRepository
+  UserRepository,
+  CommentRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -37,6 +39,7 @@ class RepositoryServiceProvider extends ServiceProvider
       // here is where the magic binding happens
       $this->app->bind(IDesign::class, DesignRepository::class);
       $this->app->bind(IUser::class, UserRepository::class);
+      $this->app->bind(IComment::class, CommentRepository::class);
       // no go register this service provider in config\app.php under Service Providers;
       //  App\Providers\RepositoryServiceProvider::class,
     }

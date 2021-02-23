@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Repositories\Contracts\IUser; // User Interface = contract; for use with Repository Pattern
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Repositories\Eloquent\Criteria\EagerLoad;
+use App\Repositories\Contracts\IUser; // User Interface = contract; for use with Repository Pattern
 
 class UserController extends Controller
 {
@@ -19,9 +20,10 @@ class UserController extends Controller
 
   public function index()
   { 
-    // implementing Repository pattern
-    // $users = User::all(); // old version
-    $users = $this->users->all();
+    $users = $this->users->withCriteria([
+      new EagerLoad(['designs'])  // which attributes to eager load
+    ])->all();
+    
     return UserResource::collection($users);  // returning entire resource and not just an instance
   }
 }
