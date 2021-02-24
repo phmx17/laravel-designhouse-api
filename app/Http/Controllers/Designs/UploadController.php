@@ -19,6 +19,7 @@ class UploadController extends Controller
 
   public function upload(Request $request) 
   {
+    dd($request->all());
     $this->validate($request, [
       'image' => ['required', 'mimes:jpeg,gif,bmp,png', 'max:2048']
   ]); 

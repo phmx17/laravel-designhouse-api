@@ -21,6 +21,7 @@ class CommentController extends Controller
 
   public function store(Request $request, $designId)
   {
+    dd($request->all());
     $this->validate($request, [
       'body' => ['required']
     ]);
